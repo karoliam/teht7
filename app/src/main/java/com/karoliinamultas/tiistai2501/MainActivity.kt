@@ -2,17 +2,15 @@ package com.karoliinamultas.tiistai2501
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.karoliinamultas.tiistai2501.databinding.ActivityMainBinding
-import java.util.*
-import kotlin.random.Random.Default.nextInt
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var on = false
-
+    val parties = MemberOfParliament.ParliamentMembersData.members.map { it.party }.toSet().sorted()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -24,21 +22,22 @@ class MainActivity : AppCompatActivity() {
             memberMap.put(member[i].personNumber, member[i].party)
         }*/
 
-        val parties = MemberOfParliament.ParliamentMembersData.members.map { it.party }.toSet().sorted().toString()
-        binding.partiesText.text = parties
-        var input = binding.userInput
+
+        binding.partiesText.text = parties.toString()
+
         binding.button.setOnClickListener {
-
-            if((parties.any{ it.equals(input) })){
-                val politician = MemberOfParliament.ParliamentMembersData.members.map { it.last }.toSet().sorted().toString()
-                val randomPolitician = politician.random()
-                binding.politicianName.text = randomPolitician.toString()
-                }
-
+                findRandomPolitician(it)
             }
-
 
         }
 
+    fun findRandomPolitician(viewThatIsClicked: View) {
+        val input = binding.politicianName.text
+        if((parties.any{ it.equals(input) })){
+            val politician = MemberOfParliament.ParliamentMembersData.members.map { it.last }.toSet().sorted().toString()
+            val randomPolitician = politician.random()
+            binding.politicianName.text = randomPolitician.toString()
+        }
+    }
 
     }
