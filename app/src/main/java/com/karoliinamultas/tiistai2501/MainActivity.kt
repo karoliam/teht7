@@ -26,14 +26,13 @@ class MainActivity : AppCompatActivity() {
 
         val parties = MemberOfParliament.ParliamentMembersData.members.map { it.party }.toSet().sorted().toString()
         binding.partiesText.text = parties
-
+        var input = binding.userInput
         binding.button.setOnClickListener {
-            for(i in 0..parties.length) {
-                parties[i]
-                var input = binding.userInput
+
+            if((parties.any{ it.equals(input) })){
                 val politician = MemberOfParliament.ParliamentMembersData.members.map { it.last }.toSet().sorted().toString()
                 val randomPolitician = politician.random()
-                    if (input.equals(parties[i])) binding.politicianName.text = randomPolitician.toString()
+                binding.politicianName.text = randomPolitician.toString()
                 }
 
             }
@@ -43,4 +42,3 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-}
